@@ -13,13 +13,20 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { flightStore } from "@/store/zustand";
 
 const UpperComponent = () => {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [departure, setDeparture] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const navigate = useRouter();
+  const from = flightStore((state:any)=>state.from)
+  const to = flightStore((state:any)=>state.to)
+  const departure = flightStore((state:any)=>state.departure)
+  const returnDate = flightStore((state:any)=>state.returnDate)
+  const setFrom = flightStore((state:any)=>state.setFrom)
+  const setTo = flightStore((state:any)=>state.setTo)
+  const setDeparture = flightStore((state:any)=>state.setDeparture)
+  const setReturnDate = flightStore((state:any)=>state.setReturnDate)
+  const navigate = useRouter(); 
+
+
   const [loading, setLoading] = useState(false);
 
   const handleSwap = () => {
@@ -29,13 +36,8 @@ const UpperComponent = () => {
   };
 
   const handleSearch = () => {
-    const params = new URLSearchParams({
-      from,
-      to,
-      departure,
-      returnDate,
-    }).toString();
-    navigate.push(`/searchFlight?${params}`);
+    
+    navigate.push(`/searchFlight`);
   };
 
   const airports = [

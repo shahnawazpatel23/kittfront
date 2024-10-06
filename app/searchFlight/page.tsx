@@ -8,10 +8,20 @@ import { FaCheckCircle, FaSearch, FaTimes } from "react-icons/fa";
 
 import UpperComponent from "@/components/UpperComponent";
 import { motion } from "framer-motion"; // Import motion from Framer Motion
+import { flightStore } from "@/store/zustand";
 
 const page = () => {
 
   const searchParams = useSearchParams();
+
+  const from = flightStore((state:any)=>state.from)
+  const to = flightStore((state:any)=>state.to)
+  const departure = flightStore((state:any)=>state.departure)
+  const returnDate = flightStore((state:any)=>state.returnDate)
+  const setFrom = flightStore((state:any)=>state.setFrom)
+  const setTo = flightStore((state:any)=>state.setTo)
+  const setDeparture = flightStore((state:any)=>state.setDeparture)
+  const setReturnDate = flightStore((state:any)=>state.setReturnDate)
 
   const [loading, setLoading] = useState(false);
   const [loadingz, setLoadingz] = useState(false);
@@ -19,10 +29,10 @@ const page = () => {
 
   const navigate = useRouter();
 
-  const from = searchParams.get("from")|| "DWS";
-  const to = searchParams.get("to")|| "JBP";
-  const departure = searchParams.get("departure") || "23/11/2023";
-  const returnDate = searchParams.get("returnDate")|| "30/11/22023";
+  // const from = searchParams.get("from")|| "DWS";
+  // const to = searchParams.get("to")|| "JBP";
+  // const departure = searchParams.get("departure") || "23/11/2023";
+  // const returnDate = searchParams.get("returnDate")|| "30/11/22023";
   // console.log("all the details are ", from, to, departure, returnDate);
 
   useEffect(() => {
@@ -129,10 +139,12 @@ const page = () => {
           </div>
         ) : (
           <div>
-            <Suspense fallback={<FallbackComponent />}>
-            <FlightSearchResults from={from} to={to} departure={departure} returnDate={returnDate} />
-          </Suspense>
-
+            <FlightSearchResults
+              from={from}
+              to={to}
+              departure={departure}
+              returnDate={returnDate}
+            />
           </div>
         )}
       </div>
@@ -143,9 +155,3 @@ const page = () => {
 export default page;
 
 
-const FallbackComponent = () => (
-  <div className="loading-indicator">
-    <Image src={"/airplane.gif"} width={150} height={150} alt="Loading" />
-    <p>Loading search parameters...</p>
-  </div>
-);
